@@ -2,10 +2,7 @@
 Application Configuration
 """
 
-import os
-from dotenv import load_dotenv
-
-load_dotenv()
+import streamlit as st
 
 APP_CONFIG = {
     "app_name": "AI Interview Assistant",
@@ -14,24 +11,21 @@ APP_CONFIG = {
     "description": "AI-powered interview preparation platform",
 }
 
-# Supabase Configuration
-SUPABASE_URL = os.getenv("SUPABASE_URL", "")
-SUPABASE_ANON_KEY = os.getenv("SUPABASE_ANON_KEY", "")
-SUPABASE_SERVICE_KEY = os.getenv("SUPABASE_SERVICE_KEY", "")
+# Supabase
+SUPABASE_URL = st.secrets.get("SUPABASE_URL", "")
+SUPABASE_ANON_KEY = st.secrets.get("SUPABASE_ANON_KEY", "")
 
-# Groq API Configuration
-GROQ_API_KEY = os.getenv("GROQ_API_KEY", "")
-GROQ_MODEL = os.getenv("GROQ_MODEL", "llama-3.3-70b-versatile")
-GROQ_MAX_TOKENS = int(os.getenv("GROQ_MAX_TOKENS", "2048"))
-GROQ_TEMPERATURE = float(os.getenv("GROQ_TEMPERATURE", "0.7"))
+# Groq API
+GROQ_API_KEY = st.secrets.get("GROQ_API_KEY", "")
+GROQ_MODEL = "llama-3.3-70b-versatile"
 
 # Google OAuth
-GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID", "")
-GOOGLE_CLIENT_SECRET = os.getenv("GOOGLE_CLIENT_SECRET", "")
+GOOGLE_CLIENT_ID = st.secrets.get("GOOGLE_CLIENT_ID", "")
+GOOGLE_CLIENT_SECRET = st.secrets.get("GOOGLE_CLIENT_SECRET", "")
 
 # App Settings
-DEBUG = os.getenv("DEBUG", "False").lower() == "true"
-SECRET_KEY = os.getenv("SECRET_KEY", "your-secret-key-change-in-production")
+DEBUG = False
+SECRET_KEY = "change-in-production"
 
 # Interview Settings
 MAX_INTERVIEW_QUESTIONS = 10
