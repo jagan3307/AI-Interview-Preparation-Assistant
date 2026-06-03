@@ -63,8 +63,8 @@ def show_login_page():
         # Demo account info
         with st.expander("💡 Demo Account"):
             st.info(
-                "Email: demo@aiinterview.com\n"
-                "Password: demo123\n\n"
+                "Email: sam123@gmail.com\n"
+                "Password: qwer@1234\n\n"
                 "Or create a free account to get started!"
             )
 

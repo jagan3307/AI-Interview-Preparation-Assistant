@@ -27,7 +27,7 @@ def save_resume_analysis(user_id: str, analysis_data: dict) -> str:
             "recommended_certifications": json.dumps(analysis_data.get("recommended_certifications", [])),
             "created_at": datetime.utcnow().isoformat(),
         }
-        result = db.table("resume_analyses").insert(data).execute()
+        result = db.table("resume_analysis").insert(data).execute()
         return result.data[0]["id"] if result.data else ""
     except Exception as e:
         logger.error(f"Error saving resume analysis: {e}")
@@ -39,7 +39,7 @@ def get_resume_analyses(user_id: str, limit: int = 10) -> list:
     try:
         db = get_db()
         result = (
-            db.table("resume_analyses")
+            db.table("resume_analysis")
             .select("*")
             .eq("user_id", user_id)
             .order("created_at", desc=True)

@@ -7,6 +7,7 @@ import streamlit as st
 import os
 import sys
 
+
 # ---------------------------------------------------
 # PROJECT ROOT
 # ---------------------------------------------------
@@ -119,6 +120,7 @@ def show_main_app(user):
     from pages.analytics import show_analytics
     from pages.reports import show_reports
     from pages.settings import show_settings
+    from pages.chatbot import show_chatbot
 
     # ---------------------------------------------------
     # PAGE ROUTING
@@ -137,6 +139,7 @@ def show_main_app(user):
         "analytics": show_analytics,
         "reports": show_reports,
         "settings": show_settings,
+        "chatbot": show_chatbot,
     }
 
     # ---------------------------------------------------
@@ -169,6 +172,7 @@ def show_main_app(user):
             "🏠 Dashboard": "dashboard",
             "👤 Profile": "profile",
             "📄 Resume Analyzer": "resume_analyzer",
+            "🤖 AI Chatbot": "chatbot",
             "💻 Technical Interview": "technical_interview",
             "🖥️ Coding Interview": "coding_interview",
             "🗣️ Non Technical": "non_technical",
