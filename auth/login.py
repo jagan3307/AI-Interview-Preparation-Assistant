@@ -116,15 +116,23 @@ def _handle_google_login():
     """Handle Google OAuth login."""
     try:
         client = get_supabase_client()
-        import streamlit as st
-        response = client.auth.sign_in_with_oauth({
-            "provider": "google",
-            "options": {
-                "redirect_to": "http://localhost:8501",
+
+        response = client.auth.sign_in_with_oauth(
+            {
+                "provider": "google",
+                "options": {
+                    "redirect_to": "https://ai-interview-preparation-assistant007.streamlit.app"
+                }
             }
-        })
+        )
+
         if response.url:
-            st.markdown(f'<meta http-equiv="refresh" content="0; url={response.url}">', unsafe_allow_html=True)
+            st.link_button(
+                "Continue with Google",
+                response.url,
+                use_container_width=True
+            )
+
     except Exception as e:
         st.error(f"Google login failed: {e}")
         logger.error(f"Google OAuth error: {e}")
