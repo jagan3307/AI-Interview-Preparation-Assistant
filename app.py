@@ -81,6 +81,62 @@ def main():
 
     init_session()
 
+    # Restore Google OAuth session
+    try:
+        from database.supabase_client import get_supabase_client
+        from auth.session import set_user
+        from database.user_queries import (
+            get_user_profile,
+            create_user_profile
+        )
+
+        client = get_supabase_client()
+
+        session = client.auth.get_session()
+
+        if (
+            session
+            and session.session
+            and not st.session_state.get("user")
+        ):
+
+            auth_user = session.session.user
+
+            profile = get_user_profile(auth_user.id)
+
+            if not profile:
+
+                profile = create_user_profile(
+                    user_id=auth_user.id,
+                    email=auth_user.email,
+                    full_name=auth_user.user_metadata.get(
+                        "full_name",
+                        auth_user.email.split("@")[0]
+                    )
+                )
+
+            user_data = {
+                "id": auth_user.id,
+                "email": auth_user.email,
+                "full_name": profile.get(
+                    "full_name",
+                    auth_user.user_metadata.get(
+                        "full_name",
+                        auth_user.email.split("@")[0]
+                    )
+                ),
+                "is_admin": profile.get(
+                    "is_admin",
+                    False
+                ),
+                **profile
+            }
+
+            set_user(user_data)
+
+    except Exception as e:
+        print("OAuth Restore Error:", e)
+
     user = get_current_user()
 
     if not user:
@@ -100,9 +156,6 @@ def main():
         return
 
     show_main_app(user)
-
-# ---------------------------------------------------
-# MAIN APP
 # ---------------------------------------------------
 def show_main_app(user):
 

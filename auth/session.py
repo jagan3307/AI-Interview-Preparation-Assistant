@@ -35,14 +35,17 @@ def set_user(user_data: dict, token: str = None):
 
 
 def get_current_user():
-    """Get current user from session or Supabase."""
-    
+
     if st.session_state.get("user"):
         return st.session_state.user
 
     try:
+
         from database.supabase_client import get_supabase_client
-        from database.user_queries import get_user_profile, create_user_profile
+        from database.user_queries import (
+            get_user_profile,
+            create_user_profile
+        )
 
         client = get_supabase_client()
 
@@ -50,25 +53,35 @@ def get_current_user():
 
         if session and session.session:
 
-            user = session.session.user
+            auth_user = session.session.user
 
-            profile = get_user_profile(user.id)
+            profile = get_user_profile(auth_user.id)
 
             if not profile:
+
                 profile = create_user_profile(
-                    user_id=user.id,
-                    email=user.email,
-                    full_name=user.user_metadata.get("full_name", "")
+                    user_id=auth_user.id,
+                    email=auth_user.email,
+                    full_name=auth_user.user_metadata.get(
+                        "full_name",
+                        ""
+                    )
                 )
 
             user_data = {
-                "id": user.id,
-                "email": user.email,
+                "id": auth_user.id,
+                "email": auth_user.email,
                 "full_name": profile.get(
                     "full_name",
-                    user.user_metadata.get("full_name", "")
+                    auth_user.user_metadata.get(
+                        "full_name",
+                        ""
+                    )
                 ),
-                "is_admin": profile.get("is_admin", False),
+                "is_admin": profile.get(
+                    "is_admin",
+                    False
+                ),
                 **profile
             }
 
@@ -80,7 +93,6 @@ def get_current_user():
         logger.error(f"Session restore error: {e}")
 
     return None
-
 
 def logout():
     """Log out the current user."""

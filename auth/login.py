@@ -113,25 +113,26 @@ def _handle_login(email: str, password: str):
 
 
 def _handle_google_login():
-    """Handle Google OAuth login."""
+
     try:
+
         client = get_supabase_client()
 
         response = client.auth.sign_in_with_oauth(
             {
                 "provider": "google",
                 "options": {
-                    "redirect_to": "https://ai-interview-preparation-assistant007.streamlit.app"
+                    "redirect_to":
+                    "https://ai-interview-preparation-assistant007.streamlit.app"
                 }
             }
         )
 
-        if response.url:
-            st.link_button(
-                "Continue with Google",
-                response.url,
-                use_container_width=True
-            )
+        st.link_button(
+            "Continue with Google",
+            response.url,
+            use_container_width=True
+        )
 
     except Exception as e:
         st.error(f"Google login failed: {e}")
